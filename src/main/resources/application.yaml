@@ -1,0 +1,12 @@
+server:
+  port: 8999
+
+spring:
+  application:
+    name: movie-backend
+
+  datasource:
+    url: jdbc:postgresql://${database.host}:${database.port}/${database.name}
+    username: ${database.username}
+    password: ${database.password}
+    driver-class-name: org.postgresql.Driver
