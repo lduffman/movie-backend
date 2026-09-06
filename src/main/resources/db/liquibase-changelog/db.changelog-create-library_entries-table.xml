@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="loic.le-doeuff (generated)" id="1788528975633-2">
+        <createTable tableName="library_entries">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_library_entries"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="NUMERIC(3,1)"/>
+            <column name="watched" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="user_id, movie_id" constraintName="UX_library_entries_userId_movieId" tableName="library_entries"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="library_entries" constraintName="FK_library_entries_userId" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="library_entries" constraintName="FK_library_entries_movieId" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="movies" validate="true"/>
+
+        <rollback>
+            <dropUniqueConstraint tableName="library_entries" constraintName="UX_library_entries_userId_movieId"/>
+            <dropForeignKeyConstraint baseTableName="library_entries" constraintName="FK_library_entries_userId"/>
+            <dropForeignKeyConstraint baseTableName="library_entries" constraintName="FK_library_entries_movieId"/>
+
+            <dropTable tableName="library_entries"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
