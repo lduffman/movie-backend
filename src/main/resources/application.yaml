@@ -4,6 +4,20 @@ server:
 spring:
   application:
     name: movie-backend
+  flyway:
+    enabled: false
+    locations: classpath:db/flyway-migration
+
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/liquibase-changelog/db.changelog-master.xml
+    url: jdbc:postgresql://${database.host}:${database.port}/${database.name}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate # validation by Hibernate
+    open-in-view: false
 
   flyway:
     enabled: false
