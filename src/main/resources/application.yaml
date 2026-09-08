@@ -1,13 +1,13 @@
 server:
-  port: 8999
+  port: 8080
 
 spring:
   application:
     name: movie-backend
+
   flyway:
     enabled: false
     locations: classpath:db/flyway-migration
-
 
   liquibase:
     enabled: true
@@ -24,3 +24,9 @@ spring:
     username: ${database.username}
     password: ${database.password}
     driver-class-name: org.postgresql.Driver
+
+app:
+  external-api:
+    base-url: https://nodejs-develop-5290.up.railway.app
+    api-key: ${EXTERNAL_API_KEY:changeme}
+    api-key-header: API_KEY
