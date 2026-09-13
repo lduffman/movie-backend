@@ -2,6 +2,7 @@ package com.courses_polytech.movie_backend.controllers;
 
 import com.courses_polytech.movie_backend.models.dtos.LoginRequest;
 import com.courses_polytech.movie_backend.models.dtos.RegisterRequest;
+import com.courses_polytech.movie_backend.models.dtos.TokenResponse;
 import com.courses_polytech.movie_backend.models.dtos.UserResponse;
 import com.courses_polytech.movie_backend.services.AuthService;
 import com.courses_polytech.movie_backend.services.UserService;
@@ -27,10 +28,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.status(201).body(userService.registerUser(registerRequest));
-    };
+    }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest.getUsername(), loginRequest.getPassword()));
     }
 }

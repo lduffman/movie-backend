@@ -19,20 +19,6 @@ spring:
       ddl-auto: validate # validation by Hibernate
     open-in-view: false
 
-  flyway:
-    enabled: false
-    locations: classpath:db/flyway-migration
-
-  liquibase:
-    enabled: true
-    change-log: classpath:db/liquibase-changelog/db.changelog-master.xml
-    url: jdbc:postgresql://${database.host}:${database.port}/${database.name}
-
-  jpa:
-    hibernate:
-      ddl-auto: validate # validation by Hibernate
-    open-in-view: false
-
   datasource:
     url: jdbc:postgresql://${database.host}:${database.port}/${database.name}
     username: ${database.username}
@@ -40,7 +26,13 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 app:
+  cors:
+    allowed-origins: http://localhost:*
   external-api:
     base-url: https://nodejs-develop-5290.up.railway.app
-    api-key: ${EXTERNAL_API_KEY:changeme}
+    api-key: ${EXTERNAL_API_KEY}
     api-key-header: API_KEY
+  jwt:
+    issuer: movie-backend
+    expiration-seconds: 3600
+    secret: ${JWT_SECRET}

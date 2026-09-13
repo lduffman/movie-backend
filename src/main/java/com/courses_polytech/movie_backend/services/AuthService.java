@@ -1,8 +1,7 @@
 package com.courses_polytech.movie_backend.services;
 
 import com.courses_polytech.movie_backend.exceptions.UnauthorizedException;
-import com.courses_polytech.movie_backend.models.converters.UserConverter;
-import com.courses_polytech.movie_backend.models.dtos.UserResponse;
+import com.courses_polytech.movie_backend.models.dtos.TokenResponse;
 import com.courses_polytech.movie_backend.models.entities.User;
 import com.courses_polytech.movie_backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,10 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserConverter userConverter;
+    private final TokenService tokenService;
 
     @Transactional
-    public UserResponse login(String username, String password) {
+    public TokenResponse login(String username, String password) {
         log.info("Login request for username {} ", username);
         Optional<User> maybeUser = userRepository.findByUsername(username);
 
@@ -37,6 +36,6 @@ public class AuthService {
             throw new UnauthorizedException("Invalid username or password");
         }
 
-        return userConverter.mapToUserResponse(user);
+        return tokenService.issueToken(user);
     }
 }
