@@ -37,11 +37,6 @@ public class LibraryController {
                 .body(libraryService.upsertLibraryEntry(movieId, dto.isWatched(), dto.getRating()));
     }
 
-    @PatchMapping("{movieId}")
-    public ResponseEntity<LibraryEntryDto> updateMovieToMyLibrary(@PathVariable UUID movieId, @Valid @RequestBody LibraryEntryUpsertDto dto) {
-        return ResponseEntity.ok(libraryService.updateMovieToMyLibrary(movieId, dto.isWatched(), dto.getRating()));
-    }
-
     @DeleteMapping("{movieId}")
     public ResponseEntity<Void> removeMovieFromLibrary(@PathVariable UUID movieId) {
         libraryService.removeMovieFromMyLibrary(movieId);

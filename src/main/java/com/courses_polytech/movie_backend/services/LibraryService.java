@@ -73,19 +73,6 @@ public class LibraryService {
     }
 
     @Transactional
-    public LibraryEntryDto updateMovieToMyLibrary(UUID movieId, Boolean watched, BigDecimal rating) {
-        log.info("Update movie {} to user {} library", movieId, currentUser.id());
-
-        LibraryEntry currentEntry = libraryEntryRepository.findByUserIdAndMovieId(currentUser.id(), movieId)
-                .orElseThrow(() -> new NotFoundException("Entry not found"));
-
-        currentEntry.setRating(rating);
-        currentEntry.setWatched(watched);
-
-        return libraryEntryConverter.mapToDto(libraryEntryRepository.save(currentEntry));
-    }
-
-    @Transactional
     public void removeMovieFromMyLibrary(UUID movieId) {
         log.info("Remove movie {} from library of user {}", movieId, currentUser.id());
 
