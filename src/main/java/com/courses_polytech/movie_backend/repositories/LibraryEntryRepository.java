@@ -20,5 +20,4 @@ public interface LibraryEntryRepository extends JpaRepository<LibraryEntry, UUID
             @Param("watched") Boolean watched,
             Pageable pageable);
     Optional<LibraryEntry> findByUserIdAndMovieId(UUID userId, UUID movieId);
-    void deleteByUserIdAndMovieId(UUID userId, UUID movieId);
 }

@@ -76,7 +76,10 @@ public class LibraryService {
     public void removeMovieFromMyLibrary(UUID movieId) {
         log.info("Remove movie {} from library of user {}", movieId, currentUser.id());
 
-        libraryEntryRepository.deleteByUserIdAndMovieId(currentUser.id(), movieId);
+        LibraryEntry entry = libraryEntryRepository.findByUserIdAndMovieId(currentUser.id(), movieId)
+                .orElseThrow(() -> new NotFoundException("No library entry found for user " + currentUser.id() + " and movie " + movieId));
+
+        libraryEntryRepository.delete(entry);
     }
 
 }

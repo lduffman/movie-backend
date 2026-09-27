@@ -59,6 +59,10 @@ public class MovieService {
     public PageDto<CommentDto> retrieveMovieComments(UUID movieId, Pageable pageable) {
         log.info("Retrieving comments for movie {}", movieId);
 
+        if (!movieRepository.existsById(movieId)) {
+            throw new NotFoundException("Movie not found");
+        }
+
         return PageDto.from(commentRepository.findAllByMovieIdOrderByCreatedAtDesc(movieId, pageable)
                 .map(commentConverter::mapToDto));
 
