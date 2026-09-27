@@ -34,7 +34,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
             countQuery = """
                     SELECT COUNT(*)
                     FROM movies m
-                    WHERE (COALESCE(:title, '') = '' OR m.title ILIKE CONCAT(:title, '%'))
+                    WHERE (COALESCE(:title, '') = '' OR m.title ILIKE CONCAT('%', :title, '%'))
                       AND (
                             COALESCE(:genre, '') = ''
                             OR EXISTS (
