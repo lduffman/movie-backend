@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
 import java.util.List;
@@ -35,6 +38,24 @@ public class GlobalExceptionHandler {
                 .toList();
         return ResponseEntity.badRequest()
                 .body(new ValidationError(400, "Invalid request", Instant.now(), errors));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiError> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ApiError(400, "Invalid value for parameter '" + ex.getName() + "'", Instant.now()));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiError> handleMissingParameter(MissingServletRequestParameterException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ApiError(400, "Missing required parameter '" + ex.getParameterName() + "'", Instant.now()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiError> handleUnreadableBody(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ApiError(400, "Malformed request body", Instant.now()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
